@@ -133,3 +133,32 @@ Hasta el momento webpack ha tomado el contenido de nuestros archivos javascript 
 
 Para poner un ejemplo haremos uso de una funcionalidad nueva en javascript. El spread operator. Este nos permite tomar un objeto y descomponer sus partes, basicamente.
 
+Para esto borraremos el archivo "temp.js" y sustituiremos el contenido de "index.js" por el siguiente:
+
+```
+const objeto = {
+    a: 'atributo A',
+    b: 'atributo B'
+};
+
+console.log(...objeto);
+```
+
+Este segmento de código está definiendo el objeto 'objeto' y con un console log está imprimiendo cada uno de sus atributos. Para lograrlo hace uso del ya mencionado spread operator.
+
+Si ejecutamos ahora webpack, veremos que genera sin problemas el archivo de bundle, pero si intentamos ejecutarlo con node, veremos que nos genera errores.
+
+Esto es porque la versión de javascript utilizada por Node no conoce el spread operator. Pero no nos preocupemos, para resolver este problema haremos uso de babel, el cuál es un transpiler que toma los features más nuevos de javascript y los traduce para que puedan ser utilizados por motores más antiguos.
+
+Lo que hará webpack es hacer uso de babel antes de generar el bundle final y así preparar un archivo que Node sepa utilizar.
+
+Lo que haremos es agregar el campo 'module' a nuestra configuración de webpack. Este campo consta de un objeto con un campo 'rules' que es un arreglo de objetos los cuales tienen la siguiente estructura:
+
+```
+{ 
+    test: /\.txt$/, 
+    use: "raw-loader" 
+}
+```
+
+El campo test es una expresión regular para saber que archivos debe considerar al aplicar esa regla. El campo 'use' es el mecanismo o 'loader' que webpack usará para interpretar este archivo. En el ejemplo
